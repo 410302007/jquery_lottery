@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>index</title>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.2/themes/smoothness/jquery-ui.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script type="text/javascript"></script>
+
+    <style>
+        .wrap {
+            padding: 1em;
+            text-align: center;
+            background-color: tan;
+            /* display: flex; */
+        }
+
+        p button {
+            font-size: 22px;
+            cursor: pointer;
+        }
+
+        p text {
+            text-align: left;
+        }
+
+        .nums {
+            overflow: hidden;
+            align-items: center;
+            margin: auto;
+            padding: auto;
+            width: 600px;
+            cursor: pointer;
+
+        }
+
+        .nums>div {
+            display: block;
+            float: left;
+            width: 25px;
+            height: 25px;
+            background-color: #fff;
+            color: #555;
+            font-size: 20px;
+            padding: 10px;
+            text-align: center;
+            line-height: 25px;
+            margin: 10px;
+            border-radius: 50%;
+        }
+
+        .nums .selector {
+            background-color: navy;
+            color: #fff;
+        }
+
+        .nums .auto {
+            background-color: orangered;
+            color: #333;
+        }
+
+        .nums .selector.auto {
+            background-color: yellow;
+            color: #333;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <h1>超級大樂透</h1>
+        <div class="nums"></div>
+        <div class="lottery-result">
+        </div>
+
+
+        <p>
+            <button class="btn-computer">電腦選號</button>
+            <button class="btn-lottery">檢視猜測結果</button>
+            <button class="reset">重啟遊戲</button>
+        </p>
+
+
+
+
+    </div>
+    <script>
+        let selected = $('.selector').length;
+        if (selected != 6) {
+            alert('請選取六個數字');
+        };
+
+        $(function () {
+            $("#tabs").tabs();
+            $('.nums div').on("mouseover mouseout", function (event) {
+                if (event.type == "mouseover") {
+                    $(this).css("backgroundColor", "khaki");
+                } else if (event.type == "mouseout") {
+                    $(this).css("backgroundColor", "");
+                }
+            })
+        })
+
+        $(function () {
+            $("#tabs").tabs();
+            $('.reset').on("mouseover mouseout", function (event) {
+                if (event.type == "mouseover") {
+                    $(this).css("backgroundColor", "plum");
+                } else if (event.type == "mouseout") {
+                    $(this).css("backgroundColor", "");
+                }
+            })
+        })
+
+        $(function () {
+            $("#tabs").tabs();
+            $('.btn-lottery').on("mouseover mouseout", function (event) {
+                if (event.type == "mouseover") {
+                    $(this).css("backgroundColor", "plum");
+                } else if (event.type == "mouseout") {
+                    $(this).css("backgroundColor", "");
+                }
+            })
+        })
+
+        $(function () {
+            $("#tabs").tabs();
+            $('.btn-computer').on("mouseover mouseout", function (event) {
+                if (event.type == "mouseover") {
+                    $(this).css("backgroundColor", "plum");
+                } else if (event.type == "mouseout") {
+                    $(this).css("backgroundColor", "");
+                }
+            })
+        })
+
+
+
+
+        for (let i = 1; i < 50; i++) {
+            $('.nums').append('<div>' + i + '</div>');
+        }
+
+
+        $('.nums div').click(function () {
+            if ($('.selector').length < 6) {
+                $(this).addClass('selector');
+            }
+        });
+
+
+
+        $('.reset').click(function () {
+            $('.nums div').removeClass('selector auto');
+        });
+
+
+        $('.btn-lottery').click(function () {
+            $('.nums div').removeClass('auto');
+
+
+            let selected = $('.selector').length;
+
+            if (selected != 6) {
+                alert('注意！您未選取六個數字');
+                return false;
+            }
+
+
+            let lottery = [], number;
+
+            function getRandom(x) {
+                return Math.floor(Math.random() * x) + 1;
+            };
+            function getLotteryNum() {
+                let number = 0;
+                while (lottery.length < 6) {
+                    number = getRandom(49);
+                    if (lottery.includes(number) == false) {
+                        lottery.push(number);
+                    };
+                }
+            }
+            getLotteryNum();
+
+
+
+
+            for (i = 0; i < lottery.length; i++) {
+                $('.nums div').eq(lottery[i] - 1).addClass('auto');
+            }
+
+
+
+            let bingo = $('.selector.auto').length;
+
+            alert('您兌中' + bingo + '位數');
+            
+
+
+
+        });
+
+        //電腦選號
+        $('.btn-computer').click(function () {
+            $('.nums div').removeClass('selector');
+            let nums = []
+            let s = $(this).text()
+            let n = parseInt(s)
+
+            while (nums.length < 6) {
+                let n = Math.floor(Math.random() * 49) + 1;
+                if (nums.includes(n) == false)
+                    nums.push(n);
+            }
+
+            // if (nums.length < 6) { nums.push(n) };
+            for (i = 0; i < nums.length; i++) {
+                $('.nums div').eq(nums[i] - 1).addClass('selector');
+
+            }
+        });
+
+
+
+        //檢視猜測結果
+        $('.btn-lottery').click(function () {
+            let nums =[];
+            let ans = [];
+            while (nums.length < 6) {
+                let n = Math.floor(Math.random() * 49) + 1;
+                if (nums.includes(n) == false)
+                    nums.push(n);
+            }
+            $.each(nums, function (index, value) {
+                if (ans.includes(value))
+
+                    corrects.push(value);
+            })
+        });
+
+
+
+    </script>
+</body>
+
+</html>
